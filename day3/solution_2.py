@@ -1,44 +1,51 @@
 def convert(array):
+    array = array[::-1]
     sum = 0
     for index,i in enumerate(array):
         sum += int(i) * pow(10,index)
     return sum
 
 def find_adjacent_numbers(x,y,matrix):
-    answer = False
-
-    char = matrix[y - 1][x - 1]
-    char = matrix[y + 1][x - 1]
-    char = matrix[y][x - 1]    
-    char = matrix[y - 1][x ]
-    char = matrix[y][x ]
-    char = matrix[y + 1 ][x ]
+    answer = []
     
-    
-
-    
-
-
-    if y > 0:
-        if char != '.' and not(char.isdigit()) and char != '\n':
-                answer = True
-    
-    if y < 139:
-        char = matrix[y + 1][x - 1]
-        if char != '.' and not(char.isdigit()) and char != '\n':
-            answer = True
-
-    if x > 0:
-        char = matrix[y][x-1]
-        if char != '.' and not(char.isdigit()) and char != '\n':
-            answer = True
-
-    if x < 139:
-        char = matrix[y][x + length]
-        if char != '.' and not(char.isdigit()) and char != '\n':
-            answer = True
+    for i in range(3):
+        for j in range(3):
+            try:
+                if matrix[(y - 1) + i][(x - 1) + j].isdigit():
+                    answer.append(find_number((x - 1) + j, (y - 1) + i, matrix))
+            except IndexError:
+                pass 
     
     return answer
+
+
+def find_number(x,y,matrix):
+    answer = []
+    element = matrix[y][x]
+    x_backup = x 
+
+    while element.isdigit():
+        answer.append(element)
+        matrix[y][x] = '.'
+        x -= 1
+        element = matrix[y][x]
+
+    x = x_backup
+    x += 1
+    element = matrix[y][x]
+    answer = answer[::-1]
+    while element.isdigit():
+        answer.append(element)
+        matrix[y][x] = '.'
+        x += 1
+        element = matrix[y][x]
+
+    print(answer)
+
+    return answer
+
+
+
 
 file = open('day3\input.txt')
 
@@ -51,18 +58,18 @@ for line in file:
     for char in line:
         array.append(char)
     matrix.append(array)
-print(matrix[1][79])
 
 
 for y, array in enumerate(matrix): 
     for x, element in enumerate(array):
+        number = []
         if element == '*':
-            find_adjacent_numbers(x,y,matrix)
-
+            number = find_adjacent_numbers(x,y,matrix)
         if number != []:
-            print(number,x,y)
-            if is_to_add(matrix,(y,x),len(number)):
-                total_sum += convert(number[::-1])
+            print(number)
+
+        if len(number) == 2:
+            total_sum += convert(number[0]) * convert(number[1])                
                 
 
 

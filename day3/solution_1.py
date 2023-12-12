@@ -11,7 +11,7 @@ def is_to_add(matrix,index,length):
     if y > 0:
         for i in range(length + 2):
             char = matrix[y - 1][x + i - 1]
-            if char != '.' and not(char.isdigit()) and char != '\n':
+            if char != '.' and not(char.isdigit()) and not '\n':
                 answer = True
     
     if y < 139:
