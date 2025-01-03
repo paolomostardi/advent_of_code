@@ -1,9 +1,0 @@
-file = open('day11/input.txt')
-
-galaxies = []
-
-for y, line in enumerate(file):
-    for x, character in enumerate(file):
-        galaxies.append([x,y])
-
-print(galaxies)
